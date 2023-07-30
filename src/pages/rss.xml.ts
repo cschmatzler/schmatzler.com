@@ -2,7 +2,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export const get = async () => {
-  const baseUrl = "https://schmatzler.dev";
+  const baseUrl = "https://medium.place";
   const posts = await getCollection("blog")
   const sortedPosts = posts
     .filter((p) => p.data.draft !== true)

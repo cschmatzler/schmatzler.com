@@ -5,6 +5,6 @@ import tailwind from "@astrojs/tailwind";
 import markdoc from "@astrojs/markdoc";
 
 export default defineConfig({
-  site: "https://schmatzler.dev",
+  site: "https://medium.place",
   integrations: [sitemap(), tailwind(), markdoc()],
 });
