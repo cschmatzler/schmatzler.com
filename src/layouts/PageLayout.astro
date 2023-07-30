@@ -1,0 +1,54 @@
+---
+import "../styles/global.css";
+import GitHubIcon from "../components/icons/github.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <slot name="meta" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+
+  <body class="bg-base text-text flex flex-col px-4 py-8 md:p-0 max-w-3xl mx-auto"  >
+    <header class="pt-4 flex flex-col">
+      <div class="flex">
+        <nav class="flex-grow">
+          <section>
+            <ul class="flex space-x-6">
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+          </section>
+        </nav>
+        <div>
+          <a href="https://github.com/cschmatzler" aria-label="me on GitHub">
+            <GitHubIcon title="GitHub" />
+          </a>
+        </div>
+      </div>
+      <div class="w-full mt-2 border-b-2 border-black squiggle"></div>
+    </header>
+
+    <main id="main" class="mt-12">
+      <slot name="main" />
+    </main>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="0" width="0">
+      <defs>
+        <filter id="squiggle">
+          <feTurbulence
+            type="fractalNoise"
+            id="turbulence"
+            baseFrequency=".05"
+            numOctaves="2"></feTurbulence>
+          <feDisplacementMap id="displacement" in="SourceGraphic" scale="4"></feDisplacementMap>
+        </filter>
+      </defs>
+    </svg>
+  </body>
+</html>

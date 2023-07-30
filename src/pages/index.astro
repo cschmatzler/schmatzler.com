@@ -1,0 +1,16 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import PageMeta from "../components/PageMeta.astro";
+---
+
+<PageLayout>
+  <PageMeta title="Christoph Schmatzler" slot="meta" />
+  <Fragment slot="main">
+    <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-yellow to-pink">
+      Christoph Schmatzler
+    </h1>
+    <p class="text-xl text-subtext mt-3">
+      Developer. Presumed blog publisher. Self-proclaimed okay at doing things.
+    </p>
+  </Fragment>
+</PageLayout>
