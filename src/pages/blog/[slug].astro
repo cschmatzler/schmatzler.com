@@ -35,12 +35,12 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-us", {
   />
   <Fragment slot="main">
     <time datetime={data.date.toISOString()} class="order-first flex items-center">
-      <span class="h-4 w-0.5 rounded-full bg-mauve"></span>
+      <span class="h-4 w-0.5 rounded-full bg-lavender"></span>
       <span class="ml-3 text-subtext">{formattedDate}</span>
     </time>
     <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
     <div class="mt-6 prose">
-    <Content />
-      </div>
+      <Content />
+    </div>
   </Fragment>
 </PageLayout>

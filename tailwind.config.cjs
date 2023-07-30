@@ -11,11 +11,12 @@ module.exports = {
       colors: {
         base: "#eff1f5",
         text: "#4c4f69",
+        subtext: "#6c6f85",
         mantle: "#e6e9ef",
         mauve: "#8839ef",
         pink: "#ea76cb",
         yellow: "#df8e1d",
-        subtext: "#6c6f85",
+        lavender: "#7287fd",
       },
     },
   },
