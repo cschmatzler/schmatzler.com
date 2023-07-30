@@ -1,35 +1,33 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
-export const get = async () => {
-  const baseUrl = "https://medium.place";
-  const posts = await getCollection("blog")
-  const sortedPosts = posts
+export async function get(context: any) {
+  const posts = await getCollection("blog");
+
+  const rssItems = posts
     .filter((p) => p.data.draft !== true)
     .sort(
       (a, b) =>
-        new Date(b.data.date).valueOf() -
-        new Date(a.data.date).valueOf()
-    );
+        new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+    )
+    .map(({ data, slug }) => {
+      const title = data.title;
+      const pubDate = data.date;
+      const description = data.description;
+      const link = `${context.site.origin}/blog/${slug}`;
 
-  const rssItems = sortedPosts.map(({ data, slug }) => {
-    const title = data.title;
-    const pubDate = data.date;
-    const description = data.description;
-    const link = `${baseUrl}/blog/${slug}`;
-
-    return {
-      title,
-      pubDate,
-      description,
-      link,
-    };
-  });
+      return {
+        title,
+        pubDate,
+        description,
+        link,
+      };
+    });
 
   return rss({
     title: "Christoph Schmatzler",
-    description: "Really, another blog?",
-    site: baseUrl,
+    description: "Developer. Presumed blog publisher. Self-proclaimed okay at doing things.",
+    site: context.site,
     items: rssItems,
   });
-};
+}

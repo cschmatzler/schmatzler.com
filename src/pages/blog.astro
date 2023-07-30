@@ -15,7 +15,10 @@ const sortedPosts = posts
 ---
 
 <PageLayout>
-  <PageMeta title={`Blog | Christoph Schmatzler`} slot="meta" />
+  <Fragment slot="meta">
+    <PageMeta title={`Blog | Christoph Schmatzler`} />
+    <link rel="alternate" type="application/rss+xml" title=".rss" href="/rss.xml" />
+  </Fragment>
   <section slot="main">
     <ul class="space-y-6">
       {
