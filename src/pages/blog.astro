@@ -35,7 +35,7 @@ const sortedPosts = posts
               <div class="flex-grow text-xl">
                 <a href={`/blog/${post.slug}`}>{post.data.title}</a>
               </div>
-              <div class="italic">
+              <div class="italic flex-shrink-0 ml-6">
                 <time datetime={post.data.date.toISOString()}>
                   {formattedDate}
                 </time>
