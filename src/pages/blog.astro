@@ -30,12 +30,13 @@ const sortedPosts = posts
             month: "short",
             day: "numeric",
           });
+
           return (
             <li class="flex">
               <div class="flex-grow text-xl">
                 <a href={`/blog/${post.slug}`}>{post.data.title}</a>
               </div>
-              <div class="italic flex-shrink-0 ml-6">
+              <div class="font-light text-overlay flex-shrink-0 ml-6">
                 <time datetime={post.data.date.toISOString()}>
                   {formattedDate}
                 </time>

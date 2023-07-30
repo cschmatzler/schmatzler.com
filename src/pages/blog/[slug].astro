@@ -20,7 +20,7 @@ const entry = await getEntryBySlug("blog", slug);
 const {data} = entry;
 const { Content } = await entry.render()
 
-const formattedDate = new Date(data.date).toLocaleDateString("en-us", {
+const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
   year: "numeric",
   month: "short",
   day: "numeric",
