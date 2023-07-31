@@ -26,7 +26,8 @@ export async function get(context: any) {
 
   return rss({
     title: "Christoph Schmatzler",
-    description: "Developer. Presumed blog publisher. Self-proclaimed okay at doing things.",
+    description:
+      "Developer. Presumed blog publisher. Self-proclaimed okay at doing things.",
     site: context.site,
     items: rssItems,
   });

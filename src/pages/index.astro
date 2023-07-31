@@ -1,22 +1,76 @@
 ---
+import { getCollection } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
 import PageMeta from "../components/PageMeta.astro";
+
+const allPosts = await getCollection("posts", ({ data }) => {
+  return data.draft === false;
+});
+const sortedPosts = allPosts.sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+const posts = sortedPosts.slice(0, 5);
 ---
 
 <PageLayout>
-  <PageMeta title="Christoph Schmatzler" slot="meta" />
+  <PageMeta title="The Medium Place" slot="meta" />
   <Fragment slot="main">
-    <h1 class="bg-gradient-to-br from-yellow to-pink bg-clip-text text-5xl font-extrabold text-transparent">
+    <h1
+      class="bg-gradient-to-br from-pink to-yellow bg-clip-text text-5xl font-extrabold text-transparent"
+    >
       The Medium Place
     </h1>
+
     <section class="mt-8 w-full rounded-lg bg-mantle p-8">
       <p class="flex flex-wrap text-xl text-subtext">
         <span>Hi! I'm Christoph.&nbsp;</span>
         <span>This is where I unload everything that comes to my mind.</span>
         <span>
-          Not quite a thought-dumpster, not exactly a wisdom-warehouse, but a perfectly lukewarm brain-porch where all the wonderfully "meh" ideas come to hang out.
+          Somewhere inbetween an idea-landfill and an enlightenment-emporium,
+          unable to decide whether this is finally an attempt at creating a
+          professional presence, an outlet for writing practice or wanting to
+          micro-blog about whatever I had for dinner last night, you are
+          definitely in for a surprise with every link you follow.
         </span>
       </p>
+    </section>
+
+    <section class="mt-16">
+      <ul class="flex flex-col divide-y divide-sky">
+        {
+          posts.map((post) => {
+            const formattedDate = new Date(post.data.date).toLocaleDateString(
+              "en-gb",
+              {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              }
+            );
+
+            return (
+              <li class="flex flex-col">
+                <a
+                  href={`/post/${post.slug}`}
+                  class="my-6 px-6 py-8 rounded-lg hover:bg-crust hover:ring-2 hover:ring-lavender"
+                >
+                  <div class="flex items-center">
+                    <span class="flex-grow text-2xl">{post.data.title}</span>
+                    <div class="font-light text-overlay flex-shrink-0 ml-6">
+                      <time datetime={post.data.date.toISOString()}>
+                        {formattedDate}
+                      </time>
+                    </div>
+                  </div>
+                  <p class="mt-4 prose text-subtext text-lg">
+                    {post.data.description}
+                  </p>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
     </section>
   </Fragment>
 </PageLayout>

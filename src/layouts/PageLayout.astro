@@ -9,18 +9,23 @@ import GitHubIcon from "../components/icons/github.astro";
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <slot name="meta" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link
+      href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
-  <body class="mx-auto flex max-w-3xl flex-col bg-base px-4 py-8 text-text md:p-0"  >
-    <header class="flex flex-col pt-8">
+  <body
+    class="mx-auto flex max-w-3xl flex-col bg-base px-4 py-8 text-text md:p-0"
+  >
+    <header class="flex flex-col sm:pt-8">
       <div class="flex">
         <nav class="flex-grow">
           <section>
             <ul class="flex space-x-6">
               <li><a href="/">Home</a></li>
-              <li><a href="/blog">Blog</a></li>
+              <li><a href="/posts/1">Posts</a></li>
             </ul>
           </section>
         </nav>
@@ -30,7 +35,10 @@ import GitHubIcon from "../components/icons/github.astro";
           </a>
         </div>
       </div>
-      <div class="mt-2 h-1 w-full rounded-full bg-gradient-to-br from-mauve to-pink"></div>
+      <div
+        class="mt-2 h-1 w-full rounded-full bg-gradient-to-br from-mauve to-pink"
+      >
+      </div>
     </header>
 
     <main id="main" class="mt-12 pb-8">
