@@ -3,8 +3,9 @@ export interface Props {
   posts: string[];
 }
 
-const { posts } = Astro.props
+const { posts } = Astro.props;
 ---
+
 <ul class="flex flex-col divide-y divide-sky">
   {
     posts.map((post) => {

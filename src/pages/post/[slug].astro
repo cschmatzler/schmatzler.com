@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntryBySlug } from 'astro:content';
+import { getCollection, getEntryBySlug } from "astro:content";
 import { SITE_URL } from "../../config";
 import PageLayout from "../../layouts/PageLayout.astro";
 import PageMeta from "../../components/PageMeta.astro";
@@ -26,18 +26,17 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
 ---
 
 <PageLayout>
-  <PageMeta
-    title={data.title}
-    description={data.description}
-    slot="meta"
-  />
+  <PageMeta title={data.title} description={data.description} slot="meta" />
   <Fragment slot="main">
-    <time datetime={data.date.toISOString()} class="mt-4 order-first flex items-center">
+    <time
+      datetime={data.date.toISOString()}
+      class="mt-4 order-first flex items-center"
+    >
       <span class="h-4 w-0.5 rounded-full bg-lavender"></span>
       <span class="ml-3 text-subtext">{formattedDate}</span>
     </time>
     <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
-    <div class="prose mt-6">
+    <div class="prose prose-catppuccin mt-6">
       <Content />
     </div>
   </Fragment>

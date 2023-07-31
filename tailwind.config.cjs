@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+import { variants } from "@catppuccin/palette";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,27 +11,31 @@ module.exports = {
         mono: ["Fira Code", ...defaultTheme.fontFamily.mono],
       },
       colors: {
-        base: "#eff1f5",
-        text: "#4c4f69",
-        subtext: "#6c6f85",
-        mantle: "#e6e9ef",
-        crust: "#dce0e8",
-        overlay: "#8c8fa1",
-        teal: "#179299",
-        rosewater: "#dc8a78",
-        surface: "#acb0be",
-        mauve: "#8839ef",
-        pink: "#ea76cb",
-        yellow: "#df8e1d",
-        sky: "#04a5e5",
-        lavender: "#7287fd",
-        green: "#40a02b",
-        peach: "#fe640b",
-        maroon: "#e64553"
+        base: variants.latte.base.hex,
+        text: variants.latte.text.hex,
+        subtext: variants.latte.subtext0.hex,
+        mantle: variants.latte.mantle.hex,
+        crust: variants.latte.crust.hex,
+        overlay: variants.latte.overlay0.hex,
+        teal: variants.latte.teal.hex,
+        rosewater: variants.latte.rosewater.hex,
+        surface: variants.latte.surface0.hex,
+        mauve: variants.latte.mauve.hex,
+        pink: variants.latte.pink.hex,
+        yellow: variants.latte.yellow.hex,
+        sky: variants.latte.sky.hex,
+        lavender: variants.latte.lavender.hex,
+        green: variants.latte.green.hex,
+        peach: variants.latte.peach.hex,
+        maroon: variants.latte.maroon.hex,
       },
-      typography: {
+      typography: ({ theme }) => ({
         DEFAULT: {
           css: {
+            a: {
+              "text-decoration-thickness": "1px;",
+              "font-weight": "600",
+            },
             "code::before": {
               content: "",
             },
@@ -39,18 +44,26 @@ module.exports = {
             },
             ":not(pre) > code": {
               "border-radius": "0.5rem",
-              background: "#dce0e8",
-              "padding-left": "4px",
+              background: variants.latte.crust.hex,
+              "padding-left": "6px",
               "padding-top": "2px",
               "padding-bottom": "2px",
-              "padding-right": "4px",
+              "padding-right": "6px",
             },
             pre: {
-              border: "3px solid #9ca0b0",
-            }
+              border: "3px solid " + variants.latte.crust.hex,
+            },
           },
         },
-      },
+        catppuccin: {
+          css: {
+            "--tw-prose-body": variants.latte.subtext0.hex,
+            "--tw-prose-headings": variants.latte.text.hex,
+            "--tw-prose-links": variants.latte.text.hex,
+            "--tw-prose-code": variants.latte.maroon.hex,
+          },
+        },
+      }),
     },
   },
   plugins: [require("@tailwindcss/typography")],

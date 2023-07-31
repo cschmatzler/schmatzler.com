@@ -5,7 +5,9 @@ import PageMeta from "../../components/PageMeta.astro";
 import PostList from "../../components/PostList.astro";
 
 export async function getStaticPaths({ paginate }) {
-  const posts = await getCollection("posts", ({ data }) => { return data.draft === false; });
+  const posts = await getCollection("posts", ({ data }) => {
+    return data.draft === false;
+  });
   const sortedPosts = posts.sort(
     (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
   );
@@ -22,8 +24,30 @@ const { page } = Astro.props;
     <PostList posts={page.data} />
     <!-- Labels here are weird, since we order things reverse-chronologically, the "next" page is actually the previous posts -->
     <div class="flex justify-between">
-      { page.url.next ? <a href={page.url.next} class="rounded-lg bg-maroon px-4 py-2 text-lg font-semibold text-base shadow-sm hover:bg-maroon/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-peach">Previous</a> : <div></div> }
-      { page.url.prev ? <a href={page.url.prev} class="rounded-lg bg-maroon px-4 py-2 text-lg font-semibold text-base shadow-sm hover:bg-maroon/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-peach">Next</a> : <div></div> }
+      {
+        page.url.next ? (
+          <a
+            href={page.url.next}
+            class="rounded-lg bg-maroon px-4 py-2 text-lg font-semibold text-base shadow-sm hover:bg-maroon/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-peach"
+          >
+            Previous
+          </a>
+        ) : (
+          <div />
+        )
+      }
+      {
+        page.url.prev ? (
+          <a
+            href={page.url.prev}
+            class="rounded-lg bg-maroon px-4 py-2 text-lg font-semibold text-base shadow-sm hover:bg-maroon/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-peach"
+          >
+            Next
+          </a>
+        ) : (
+          <div />
+        )
+      }
     </div>
   </section>
 </PageLayout>
