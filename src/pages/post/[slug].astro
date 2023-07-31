@@ -36,7 +36,9 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
       <span class="ml-3 text-subtext">{formattedDate}</span>
     </time>
     <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
-    <div class="prose prose-catppuccin mt-6 max-w-full text-justify sm:prose-xl">
+    <div
+      class="prose prose-catppuccin mt-6 max-w-full text-justify sm:prose-xl"
+    >
       <Content />
     </div>
   </Fragment>

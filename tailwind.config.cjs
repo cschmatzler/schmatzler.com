@@ -34,7 +34,7 @@ module.exports = {
           css: {
             a: {
               "text-decoration-thickness": "1px",
-              "font-weight": "600"
+              "font-weight": "600",
             },
             "code::before": {
               content: "",
@@ -57,10 +57,10 @@ module.exports = {
         },
         catppuccin: {
           css: {
-            '--tw-prose-body': variants.latte.subtext0.hex,
-            '--tw-prose-headings': variants.latte.text.hex,
-            '--tw-prose-links': variants.latte.text.hex,
-            '--tw-prose-code': variants.latte.maroon.hex
+            "--tw-prose-body": variants.latte.subtext0.hex,
+            "--tw-prose-headings": variants.latte.text.hex,
+            "--tw-prose-links": variants.latte.text.hex,
+            "--tw-prose-code": variants.latte.maroon.hex,
           },
         },
       }),
