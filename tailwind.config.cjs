@@ -24,6 +24,9 @@ module.exports = {
         yellow: "#df8e1d",
         sky: "#04a5e5",
         lavender: "#7287fd",
+        green: "#40a02b",
+        peach: "#fe640b",
+        maroon: "#e64553"
       },
       typography: {
         DEFAULT: {
