@@ -15,6 +15,8 @@ module.exports = {
         mantle: "#e6e9ef",
         crust: "#dce0e8",
         overlay: "#8c8fa1",
+        teal: "#179299",
+        rosewater: "#dc8a78",
         surface: "#acb0be",
         mauve: "#8839ef",
         pink: "#ea76cb",
