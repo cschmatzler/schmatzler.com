@@ -6,9 +6,7 @@ import PageMeta from "../../components/PageMeta.astro";
 import Renderer from "../../components/Renderer.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts", ({ data }) => {
-    return data.draft === false;
-  });
+  const posts = await getCollection("posts");
 
   return posts.map((post) => {
     return { params: { slug: post.slug } };
