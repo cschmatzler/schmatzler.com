@@ -6,5 +6,5 @@ import markdoc from "@astrojs/markdoc";
 
 export default defineConfig({
   site: "https://medium.place",
-  integrations: [sitemap(), tailwind(), markdoc()],
+  integrations: [tailwind(), markdoc()],
 });
