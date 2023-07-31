@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Manrope", ...defaultTheme.fontFamily.sans],
+        mono: ["Fira Code", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         base: "#eff1f5",
@@ -23,6 +24,26 @@ module.exports = {
         yellow: "#df8e1d",
         sky: "#04a5e5",
         lavender: "#7287fd",
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            "code::before": {
+              content: "",
+            },
+            "code::after": {
+              content: "",
+            },
+            ":not(pre) > code": {
+              "border-radius": "0.5rem",
+              background: "#dce0e8",
+              "padding-left": "4px",
+              "padding-top": "2px",
+              "padding-bottom": "2px",
+              "padding-right": "4px",
+            },
+          },
+        },
       },
     },
   },
