@@ -45,6 +45,9 @@ module.exports = {
               "padding-bottom": "2px",
               "padding-right": "4px",
             },
+            pre: {
+              border: "3px solid #9ca0b0",
+            }
           },
         },
       },
