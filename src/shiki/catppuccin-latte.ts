@@ -26,7 +26,6 @@ export default {
       scope: ["entity.name.function", "support.function"],
       settings: {
         foreground: "#1e66f5",
-        fontStyle: "italic",
       },
     },
     {
@@ -297,7 +296,6 @@ export default {
       scope: "entity.name.function.rust",
       settings: {
         foreground: "#1e66f5",
-        fontStyle: "italic",
       },
     },
     {
@@ -1041,7 +1039,6 @@ export default {
       scope: "meta.function-call.generic.python",
       settings: {
         foreground: "#1e66f5",
-        fontStyle: "italic",
       },
     },
     {
@@ -1118,7 +1115,6 @@ export default {
       ],
       settings: {
         foreground: "#1e66f5",
-        fontStyle: "italic",
       },
     },
     {

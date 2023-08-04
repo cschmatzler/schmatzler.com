@@ -36,6 +36,9 @@ module.exports = {
               "text-decoration-thickness": "1px",
               "font-weight": "600",
             },
+            code: {
+              "font-weight": "400",
+            },
             "code::before": {
               content: "",
             },
@@ -60,7 +63,6 @@ module.exports = {
             "--tw-prose-body": variants.latte.subtext0.hex,
             "--tw-prose-headings": variants.latte.text.hex,
             "--tw-prose-links": variants.latte.text.hex,
-            "--tw-prose-code": variants.latte.maroon.hex,
           },
         },
       }),

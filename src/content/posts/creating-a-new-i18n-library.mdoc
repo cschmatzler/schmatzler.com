@@ -1,0 +1,90 @@
+---
+draft: true
+title: Creating a new internationalisation library for Elixir
+date: 2023-08-04
+description: |
+  I ran into some roadblocks when translating a project, so I wrote a thing.
+---
+
+I just pushed the initial version of [Idiom](https://hex.pm/packages/idiom), and I think it's pretty cool. This is a little write-up on why I wrote it, why it
+looks the way it does, and also how it might grow in the future.
+
+## How we got here
+
+So, I was working on one of my way too many side projects. You can relate. As I want it to also work as a sort-of template for future projects, the next step
+for it was adding localisation support. Who doesn't love making their stuff available to people who aren't as privileged as others in having the opportunity 
+to learn a second or third language?  
+Now, I had started working at [Phrase](https://phrase.com) a few months prior, and while this project is in its entirety a product of my free time and not at 
+all sponsored by them, working at a localisation company gave me a few insides and expectations for how to approach this. In particular, I wanted my solution
+to
+
+- be editable outside of the editor.  
+I am comfortable messing around with text-based files, but I want to be able to hand over a message key to an acquaintance who speaks whatever language and 
+have them be able to mess around with it (no wonder my friends hate me)
+- allow updates without re-deploying my application.  
+Pushing a commit with a fix for a simple typo in some copy, having to rebuild the entire application, and triggering a new release/deployment for it is a pain
+in the ass. We can do better. There's a bunch of localisation management solutions that offer over-the-air APIs. Push a button, have your fixed copy appear in
+the application. I want that.
+
+Scouring the Elixir library landscape for localisation stuff, there's [gettext](https://hex.pm/packages/gettext). I actually quite like the library, and it
+checks the first point very quickly (although it needs manual import/export of its `po` files into whatever editor you choose), but doesn't support anything
+checking the second one.  
+I also believe we can create a more ergonomic API.
+
+## Designing an API
+
+So, it was decided to create a thing. Before I dive into the why, let me copy the examples from the documentation here:
+
+```elixir
+import Idiom, only: [t: 2, t: 3]
+
+# Set the locale
+Idiom.put_locale("en-US")
+
+t("landing.welcome")
+
+# With natural language key
+t("Hello Idiom!")
+
+# With interpolation
+t("Good morning, {{name}}. We hope you are having a great day.", %{name: "Tim"})
+
+# With plural and interpolation
+t("You need to buy {{count}} carrots", count: 1)
+
+# With namespace
+t("signup:Create your account")
+t("Create your account", namespace: "signup")
+Idiom.put_namespace("signup")
+t("Create your account")
+
+# With explicit locale
+t("Create your account", to: "fr")
+
+# With fallback locale
+t("Create your account", to: "fr", fallback: "en")
+```
+
+As you can see, Idiom only has one essential function, with a handful more as utilities. You can use the entire library by only ever calling `t/3`.
+
+### `opts` vs different functions
+
+Comparing the above examples to `gettext`'s documentation, there's a clear difference: `gettext` chooses to set domain (Idiom calls these namespaces, so I will
+use that from here in this post), plural and more by calling a different function. Want a plural? Prefix the function call with `n`. Want interpolation? Add a
+`p`. Want both? Well, `pngettext` is where you want to be. With namespaces, interpolation and plurals, you have 8 different `*gettext` functions. And you gotta
+remember the order of whatever features you need.  
+Idiom, in comparison, only uses one function for all of these. Want a plural? Pass a `count`. Want interpolation? Have `{{name}}` in your message key and pass
+a map of bindings as parameter. In a specific namespace? Well, you actually have many options.  
+To me, that has the advantage of a smaller surface for the API. It's also clearer (am I the only one who was confused at first that `pgettext` does 
+interpolation and the `p` prefix does **not** mean "plural"?). It also comes with some downside (let's go there later).
+
+### Supporting more use-cases
+
+So, I really fell in love with the `t("key", to: "de")` API. Just passing an option as simple as `to` really felt great. Then, I started dogfooding and added
+a super early version of Idiom to a Phoenix project, and in my LiveViews, it kinda sucked. Too repetitive. Enter `Idiom.put_locale/1`. It's just a wrapper
+around `Process`, but makes things much nicer. In your view's `on_mount`, call `Idiom.put_locale(user.settings.locale)` and your template can be reduced to
+only containing `t("key")`. Problem solved.
+
+### Namespaces
+
+
