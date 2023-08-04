@@ -16,7 +16,9 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const entry = await getEntryBySlug("posts", slug);
 const { data } = entry;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
+
+const shownHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
   year: "numeric",
@@ -36,8 +38,28 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
       <span class="ml-3 text-subtext">{formattedDate}</span>
     </time>
     <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
+    {shownHeadings.length > 2 && <nav class="mt-6">
+      <h2 class="text-2xl">Contents</h2>
+      <ol class="mt-3 space-y-2">
+        {
+          shownHeadings.map((h) => {
+            const className =
+              "text-subtext text-lg hover:underline hover:decoration-lavender" +
+              (h.depth == 3 ? " ml-3" : "");
+            const href = "#" + h.slug;
+
+            return (
+              <li class={className}>
+                <a href={href}>{h.text}</a>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </nav>
+    }
     <div
-      class="prose prose-catppuccin mt-6 max-w-full text-justify sm:prose-xl"
+      class="prose prose-catppuccin mt-6 max-w-full text-justify sm:prose-lg"
     >
       <Content />
     </div>
