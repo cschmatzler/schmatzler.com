@@ -54,9 +54,17 @@ module.exports = {
               "padding-right": "6px",
             },
             pre: {
-              border: "3px solid " + variants.latte.crust.hex,
+              border: "4px solid " + variants.latte.crust.hex,
+              "border-radius": "0.5rem"
             },
           },
+        },
+        lg: {
+          css: {
+            pre: {
+              "border-radius": "0.5rem"
+            },
+          }
         },
         catppuccin: {
           css: {
