@@ -1,39 +1,42 @@
 ---
-draft: true
-title: Creating a new internationalisation library for Elixir
-date: 2023-08-04
+draft: false
+title: "Launching Idiom: a new internationalisation library for Elixir"
+date: 2023-09-04
 description: |
   I ran into some roadblocks when translating a project, so I wrote a thing.
 ---
 
-I just pushed the initial version of [Idiom](https://hex.pm/packages/idiom) and I think it's pretty cool. This is a little write-up on why I wrote it, why its
-API is the way it is, and what I plan to do with it in the future.
+I just released the initial public version of [Idiom](https://hex.pm/packages/idiom) and I think it's pretty cool. This is a little write-up on why I wrote it,
+what its goals are, and what I 
 
 ## How we got here
 
-While I was working on one of my way too many side projects, I needed a way to internationalise the user interface. Having *some* experience with
-[gettext](https://hex.pm/packages/gettext), I looked around to see if I could take it farther. My optimal choice of internationalisation library should
+Proper internationalisation a goal that's not easy to achieve. You'll want to target multiple languages, but only few people on your team have deeper knowledge
+with each one, and usually there aren't too many languages covered by a single person. This means that the work of translating new parts of our user interfaces
+is also spread between multiple people.  
+In software engineering, there is a new level of complexity: those translations need to get to our users somehow. Usually, they are stored in a file somewhere,
+be it an `.arb`, `.json`, `.po` or whatever else someone once came up with. With our language knowledge spread between multiple people, this results in every
+translator either needing to access the repository and files directly, knowing the ins-and-outs of `git` and pull requests, or the messages being stored 
+somewhere in Notion, Linear or other platforms waiting to be picked up by an engineer and merged into the repository - the lovely "chore: update translations"
+that pops up every other week. On top of that, this all includes a full release and deployment process just to fix a typo.  
+
+We can do better.  
+
+To create an experience that supports both engineers and the people writing copy, an internationalisation library should:
 
 - Be editable outside of the editor while not requiring me to import/export all the time.  
-Text files are great, and I don't mind the `po` format at all. It's not super approachable to linguists and (I'm sorry) friends and family, though, and trying 
-to provide them with a proper user interface to edit translation historically required a "Export keys -> Import to editor -> Edit translations -> Export from 
-editor -> Commit to repository" workflow. This isn't ideal.
+  Text files inside a repository are great for change-tracking and history, but terrible to work with for non-engineers.
 
 - Allow copy updates without re-deploying my application.  
-Pushing a commit with a fix for a simple typo in some copy, having to rebuild the entire application, followed by triggering a new release/deployment is a pain
-in the ass. We can do better. There's a bunch of localisation management solutions that offer over-the-air APIs. Push a button, have your fixed copy appear in
-the application.
+  Pushing a commit with a fix for a simple typo in some copy, having to rebuild the entire application, followed by triggering a new release/deployment is a 
+  pain in the ass.
 
-`gettext` solves neither of these problems, and another localisation library in Elixir essentially doesn't exist.
+There are great pieces of software that offer a great user interface for managing translations while at the same time supporting over-the-air delivery of 
+translations. At the same time, the library should be agnostic to whatever software is used (warning: we're not there yet).
 
-## Designing an API
+## Introducing Idiom
 
-So, after deciding to create a thing, I needed to come up with an API for it.  
-Looking through all kinds of different localisation libraries for different languages, I figured that a little ~~stealing~~ inspiration has never hurt anyone,
-so Idiom's API is relatively close to [i18next](https://i18next.com) - they did a fantastic job in creating an ergonomic library and if you ever need
-localisation in the TypeScript world, I highly recommend checking them out.
-
-Here's some examples:
+As you're probably an engineer and only want to see some code without the babbling around it, here you go:
 
 ```elixir
 # Set the locale
@@ -45,10 +48,10 @@ t("landing.welcome")
 t("Hello Idiom!")
 
 # With interpolation
-t("Good morning, {{name}}. We hope you are having a great day.", %{name: "Tim"})
+t("Good morning, {{name}}. We hope you are having a great day.", %{name: "Marco"})
 
 # With plural and interpolation
-t("You need to buy {{count}} carrots", count: 1)
+t("You need to buy {{count}} cheese cakes", count: 1)
 
 # With namespace
 t("Create your account", namespace: "signup")
@@ -60,62 +63,79 @@ t("Create your account", to: "fr")
 
 # With fallback locale
 t("Create your account", to: "fr", fallback: "en")
+
+# With fallback key
+t(["Create your account", "Register"], to: "fr")
 ```
 
-As you can see, Idiom comes with one main function, `t/3`, and a few utilities. 
+## Being agnostic about backends
 
-### Starting with `gettext`
+Well, soon.  
+While the syntax to translate keys inside a module or template is important, arguably more important is how you get your translation into the application.
 
-As a starter, I looked at what I was familiar with: `gettext` and its multiple different functions that are slightly different but still the same. With 
-`gettext`, if you want to just translate a key, you use the `gettext(key)` function. What if you want to change the domain (Idiom calls it namespace), though?
-Your call becomes `dgettext(domain, key)`. For plurals, it's `ngettext(msgid, msgid_plural, n)`. Plurals **and** domain? 
-`dngettext(domain, msgid, msgid_plural, n)`. In order to use the library, you have to remember all the prefixes for each part of functionality, and the order
-in which to combine them.  
-You will end up with something like
+### `Idiom.Local`
+
+At startup, Idiom reads data from the local file system - yup, there'll still be a `chore: update translations` commit somewhere. Inevitably, whatever backend
+you choose to use will be unavailable. This should never result in your users being unable to see any text, though. For that reason, having some version of
+the messages locally is important as a fallback. That version might be a little outdated (fewer chores!), but at least it's something. Once an over-the-air
+backend is configured and started, the local data will be overwritten with fresh translations.  
+If you're interested in directory structure and file format, check out the documentation [here](https://hexdocs.pm/idiom/Idiom.Local.html).
+
+### `Idiom.Backend`
+
+Idiom's data storage is backed by an ETS table that can be updated by any process. To support over-the-air updates, Idiom has the concept of backends: 
+`GenServer`s that periodically fetch data from a service and update the cache. This is easily configured by adding
 
 ```elixir
-dngettext(
-  "errors",
-  "Here is the string to translate",
-  "Here are the strings to translate",
-  3
-)
+config :idiom,
+  backend: Idiom.Backend.Phrase
 ```
 
-### Being different
+to your application configuration. Idiom will automatically launch the configured backend through its `Supervisor`.  
+At the time of writing, there is one supported backend: `Idiom.Backend.Phrase`. Maybe, at the time of reading, there are more - they're certainly planned.
 
-This always felt incredibly unergonomic to me, especially when Elixir comes with the wonderful convention of adding an `opts` keyword list to functions.
+#### `Idiom.Backend.Phrase`
 
-In Idiom, if you want a different namespace, pass a `namespace` option. Want to pluralise something? Add a `count` option. Want both? Well, add both options.  
-Compare the `dngettext/4` example from above to how Idiom does it:
+Let's add some more lines to your config, shall we?
 
 ```elixir
-t("Here is the string to translate", namespace: "errors", count: 3)
+config :idiom, Idiom.Backend.Phrase,
+  distribution_id: "", # required
+  distribution_secret: "", # required
+  locales: ["de-DE", "en-US"], # required
+  namespace: "default",
+  otp_app: :your_app
 ```
 
-Note that you do not need to pass both singular and plural versions to `t/3` as Idiom automatically tries to resolve the different available plural suffixes
-(`zero`, `one`, `two`, `few`, `many`, `other`)
-In the background, the call above will resolve the suffix matching the count 3 in your locale. In English, this would be `other`, resulting in the key
-`Here is the string to translate_other`, in Arabic it would be `few`. Luckily, the Unicode Consortium keeps an updated
-[list of all plural rules](https://github.com/cschmatzler/idiom/blob/main/priv/idiom/plurals.json) Idiom is parsing to support plurals properly.
+Configuring the Phrase backend will set up Idiom to fetch all translation data from the Phrase Strings distribution in the configured locales on a specific
+time interval, regularly updating the cache. With this done, whoever is in charge of copy in your team can just update something in the Phrase UI, deploy a new
+OTA release and watch it show up for users after a few minutes - all without the awkward communication between departments or deploying a new version.
 
 ## What's next?
 
-Idiom is usable at this point, but will probably not see a `1.0` release in a while. There's a few things I'd like to work on before taking that step and
-calling the library ready for production.
+Looking at the published version, it's still `0.5.0` and I wouldn't call it production ready quite yet. If you want to experiment with it and give me feedback
+about API, functionality and bugs, I'd really appreciate that, though. For the next few weeks, I have some new features and improvements planned before tagging
+it a `1.0`.
 
-### Improved test coverage and documentation
+### Key extraction
 
-The test coverage is okay at the moment, but specifically lacks tests for right-to-left languages, and some combinations of options that could be considered
-edge cases. In addition, some edge cases are not yet covered by the documentation (what happens if you call `t("{{count}} apples", %{count: 2}, count: 3)`? I
-know the behaviour, but outside of looking at the code, it's not documented anywhere). Documentation is one area where perfectionism might be warranted.
+This is actually almost ready already, but I'm about to head out of the country for a wedding and wanted to get this post out before, so it'll be on my bucket
+list for the week after. If you have existing messages in your application, you probably at some point want to be able to import them into one of the supported
+backends. It's one of `gettext`'s killer features and Idiom will have it, too.  
+Stay tuned for `mix idiom.extract`!
 
-### Support for multiple OTA providers
+### More backends
 
-Right now, the number is zero. It should be higher. 
+Calling the library backend agnostic and only launching with a single backend is weird. Before `1.0`, there needs to be support for more backends.
 
-### Validation of performance assumptions
+### Ordinal plurals
 
-I am relatively confident in my choice of using an ETS table as message storage. With `read_concurrency`, it should never be the bottleneck in your
-application. Alas, that confidence might be completely unearned, and I might be wrong. Some numbers would be nice. Since Idiom is part of every render path of
-every part of your application, performance is actually kinda important.
+Internationalisation isn't just about translations - there's a lot more to uncover. One thing that's definitely missing at the moment are ordinal plurals. This
+might also result in a breaking change depending on what API I end up liking.
+
+## Thanks and Inspiration
+
+No library is created in isolation. While researching and writing Idiom, there were a lot of looks to the side. A lot of ideas came from 
+[gettext](https://hex.pm/packages/gettext), which is the main library in Elixir right now when it comes to internationalisation, [i18next](https://i18next.com)
+who I stole the file format from, the [Unicode CLDR Project](https://cldr.unicode.org/index) which is an absolutely invaluable resource, and my team at work
+who I forced to give me some feedback early on in development. Y'all are great.
