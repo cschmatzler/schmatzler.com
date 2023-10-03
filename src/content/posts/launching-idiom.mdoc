@@ -1,42 +1,34 @@
 ---
-draft: true
-title: "Launching Idiom: a new internationalisation library for Elixir"
-date: 2023-09-04
+draft: false
+title: "Idiom: a new internationalisation library for Elixir"
+date: 2023-10-03
 description: |
-  I ran into some roadblocks when translating a project, so I wrote a thing.
+  There's a lot of untapped potential in how we internationalise our products. Now, there's a new library to
+  help out.
 ---
 
-I just released the initial public version of [Idiom](https://hex.pm/packages/idiom) and I think it's pretty cool. This is a little write-up on why I wrote it,
-what its goals are, and what I want to do with it in the future.
+There was a time when my team was tasked with updating the translations in our app. The request was to update
+a few strings according to new legal requirements. At the time, our workflow included updating the
+translations in an external editor, exporting them to the file format of each codebase, adding a commit with
+the updated file, and submitting a new version to the App and Play Store - way too many manual steps that made
+this a very unpopular task to pick up. It was a complete pain in the ass.  
 
-## How we got here
+This is one situation where I felt like our tooling setup really failed us. There are so many little things we
+could have done: automatically synchronise to our repository, for example. Still, there is one limitation that
+cannot be overcome when bundling our translation files with our releases: having to build a new release and,
+for mobile applications, going through the annoying review process of the Stores.  
 
-Proper internationalisation a goal that's not easy to achieve. You'll want to target multiple languages, but only few people on your team have deeper knowledge
-with each one, and usually there aren't too many languages covered by a single person. This means that the work of translating new parts of our user interfaces
-is also spread between multiple people.  
-In software engineering, there is a new level of complexity: those translations need to get to our users somehow. Usually, they are stored in a file somewhere,
-be it an `.arb`, `.json`, `.po` or whatever else someone once came up with. With our language knowledge spread between multiple people, this results in every
-translator either needing to access the repository and files directly, knowing the ins-and-outs of `git` and pull requests, or the messages being stored 
-somewhere in Notion, Linear or other platforms waiting to be picked up by an engineer and merged into the repository - the lovely "chore: update translations"
-that pops up every other week. On top of that, this all includes a full release and deployment process just to fix a typo.  
+Over time, the idea of over-the-air localisation became more and more lovely to me. Then, I ended up working
+in the localisation industry, and realised that what I wanted wasn't possible in Elixir at the moment. There
+is a long-standing [pull request](https://github.com/elixir-gettext/gettext/pull/305) for `gettext` which adds
+support for runtime translations, but `gettext` still isn't the fully featured library I would like to see:
+there is no support for fallback locales and the way plurals are used is not immediately obvious especially
+for languages with more than two plural forms.
 
-We can do better.  
+## Enter Idiom
 
-To create an experience that supports both engineers and the people writing copy, an internationalisation library should:
-
-- Be editable outside of the editor while not requiring me to import/export all the time.  
-  Text files inside a repository are great for change-tracking and history, but terrible to work with for non-engineers.
-
-- Allow copy updates without re-deploying my application.  
-  Pushing a commit with a fix for a simple typo in some copy, having to rebuild the entire application, followed by triggering a new release/deployment is a 
-  pain in the ass.
-
-There are great pieces of software that offer a great user interface for managing translations while at the same time supporting over-the-air delivery of 
-translations. At the same time, the library should be agnostic to whatever software is used (warning: we're not there yet).
-
-## Introducing Idiom
-
-As you're probably an engineer and only want to see some code without the babbling around it, here you go:
+Let me introduce Idiom to you - and let's not beat around the bush for too long, so here's an excerpt from the
+README:
 
 ```elixir
 # Set the locale
@@ -63,79 +55,117 @@ t("Create your account", to: "fr")
 
 # With fallback locale
 t("Create your account", to: "fr", fallback: "en")
+t("Create your account", to: "fr", fallback: ["en-US", "en"])
 
 # With fallback key
 t(["Create your account", "Register"], to: "fr")
+
+# Everything everywhere all at once
+t("Thank you {{name}}, your purchase of {{count}} items was successful", %{name: "Marco"}, to: "fr", namespace: "signup", count: 2, fallback: "en")
 ```
 
-## Being agnostic about backends
+Now that you know the entire API (that was quick, I know), let's talk about some of the cool things that are
+hopefully going to make you not hate localisation.
 
-Well, soon.  
-While the syntax to translate keys inside a module or template is important, arguably more important is how you get your translation into the application.
+### Automatic locale hierarchy
 
-### `Idiom.Local`
+Most languages have some sort of variations between regions. If you're American, you're gonna take the
+elevator, whereas the British under us would properly be more comfortable with a lift. Then there's also
+regional differences in spelling (`@behaviour`, anyone?). The base language and a majority of the messages
+will stay the same, though. In order to reduce duplication, Idiom allows you to define your translations like
+this:
 
-At startup, Idiom reads data from the local file system - yup, there'll still be a `chore: update translations` commit somewhere. Inevitably, whatever backend
-you choose to use will be unavailable. This should never result in your users being unable to see any text, though. For that reason, having some version of
-the messages locally is important as a fallback. That version might be a little outdated (fewer chores!), but at least it's something. Once an over-the-air
-backend is configured and started, the local data will be overwritten with fresh translations.  
-If you're interested in directory structure and file format, check out the documentation [here](https://hexdocs.pm/idiom/Idiom.Local.html).
+```json
+{
+  "en": {
+    "default": {
+      "Create your account": "Create your account"
+    }
+  },
+  "en-US": {
+    "default": {
+      "Take the elevator": "Take the elevator"
+    }
+  },
+  "en-GB": {
+    "default": {
+      "Take the elevator": "Take the lift"
+    }
+  }
+}
+```
 
-### `Idiom.Backend`
+The `"Create your account"` key stays the same in every region of the English language, so we can define it
+one level up under the `en` locale. The regional differences can then be defined under the `en-US` and `en-GB`
+locales.  
+Now, when you call `t("Create your account", to: "en-GB")`, Idiom will also automatically try to resolve the
+key in the `en` locale if it's not found inside `en-GB` by creating a resolution hierarchy internally. That
+way, you can define regional differences without duplicating every single key.
 
-Idiom's data storage is backed by an ETS table that can be updated by any process. To support over-the-air updates, Idiom has the concept of backends: 
-`GenServer`s that periodically fetch data from a service and update the cache. This is easily configured by adding
+### Fallback locales
+
+Ever have a language that is not yet *fully* there translation-wise, missing a key here and there, but still
+ready enough to be made available for the users? Know that the user speaks another language? Add it to the
+resolution hierarchy as fallback language, and it'll transparently show the message in that language. This is
+also quite handy when you are targeting users from multi-lingual countries. For some Swiss people, for
+example, you might get away with something like `t("Hello!", to: "de", fallback: ["fr", "it"])`. Others might
+rip your head off, though, so make sure to finish those German translations!
+
+### Over-the-air localisation
+
+Finally. The reason I actually wrote this thing.  
+Right now, Idiom supports two backends out of the box: [Phrase](https://phrase.com) and
+[Lokalise](https://lokalise.com). They are both fantastic tools to manage your translations, and I highly
+recommend either of them. Both also support bundling your translations as over-the-air package to be
+downloaded from their CDNs, and Idiom can continuously download them and keep your copy fresh.
+
+Let's look at that, shall we?
 
 ```elixir
 config :idiom,
+  default_locale: "en",
+  default_namespace: "default",
   backend: Idiom.Backend.Phrase
-```
+  # backend: Idiom.Backend.Lokalise
 
-to your application configuration. Idiom will automatically launch the configured backend through its `Supervisor`.  
-At the time of writing, there is one supported backend: `Idiom.Backend.Phrase`. Maybe, at the time of reading, there are more - they're certainly planned.
-
-#### `Idiom.Backend.Phrase`
-
-Let's add some more lines to your config, shall we?
-
-```elixir
 config :idiom, Idiom.Backend.Phrase,
-  distribution_id: "", # required
-  distribution_secret: "", # required
-  locales: ["de-DE", "en-US"], # required
-  namespace: "default",
-  otp_app: :your_app
+  locales: ["de-DE", "en-US"],
+  distribution_id: "54070a20cb50153126f891eaee37123a",
+  distribution_secret: "K14wARUvEikIj_9-HlcuZc0uFLG1w_OfUviNi5mDpsQ",
+  otp_app: :hello_it_is_me_your_otp_app
+
+config :idiom, Idiom.Backend.Lokalise,
+  project_id: "8858941664f84165efb1d8.83865528",
+  api_token: "47022866020464a1fdd9cfe66438025cbx87",
+  otp_app: :hello_it_is_me_your_otp_app
 ```
 
-Configuring the Phrase backend will set up Idiom to fetch all translation data from the Phrase Strings distribution in the configured locales on a specific
-time interval, regularly updating the cache. With this done, whoever is in charge of copy in your team can just update something in the Phrase UI, deploy a new
-OTA release and watch it show up for users after a few minutes - all without the awkward communication between departments or deploying a new version.
+Select a backend, add your tokens, and let Idiom start is as part of its `Supervisor`. It's that easy! Now,
+your team writing copy can just update things themselves and publish a new distribution on their timeline
+without requiring any engineering input.
+
+Of course, if you are not ready to jump to an OTA solution, Idiom still supports the local file system as
+source. In fact, I'd highly recommend having some version of your localisation efforts locally in case the
+provider you are using is unavailable. When you are ready to move, though, Idiom will already support you in
+that endeavour - and, if it's with a provider that's not Phrase or Lokalise, let me know or open a PR/publish
+your own on Hex!
 
 ## What's next?
 
-Looking at the published version, it's still `0.5.0` and I wouldn't call it production ready quite yet. If you want to experiment with it and give me feedback
-about API, functionality and bugs, I'd really appreciate that, though. For the next few weeks, I have some new features and improvements planned before tagging
-it a `1.0`.
+Not much, at the moment! I'd like to add some more test cases around RTL languages and different scripts, but
+writing them has turned out to be pretty difficult since I don't speak one myself. Since Elixir is UTF-8 by
+default, though, I am reasonably confident about Idiom already supporting those. Still, test cases are always
+nice, so if you feel like your language would fit the above description, please get in touch or open a PR!
 
-### Key extraction
+Other than that, I am just waiting for the feedback to come in as I release this to the public. The good, the
+bad, the "how the hell did you miss this bug?" - they're all welcome, seriously!
 
-This is actually almost ready already, but I'm about to head out of the country for a wedding and wanted to get this post out before, so it'll be on my bucket
-list for the week after. If you have existing messages in your application, you probably at some point want to be able to import them into one of the supported
-backends. It's one of `gettext`'s killer features and Idiom will have it, too.  
-Stay tuned for `mix idiom.extract`!
+I don't expect any huge changes to the API and behaviour at this point, but the version will probably stay at
+`0.x` for a while to leave the door open for more sweeping changes in case y'all think it's unusable. Fingers
+crossed!
 
-### More backends
+---
 
-Calling the library backend agnostic and only launching with a single backend is weird. Before `1.0`, there needs to be support for more backends.
-
-### Ordinal plurals
-
-Internationalisation isn't just about translations - there's a lot more to uncover. One thing that's definitely missing at the moment are ordinal plurals. This
-might also result in a breaking change depending on what API I end up liking.
-
-## Thanks and Inspiration
-
-No library is created in isolation. While researching and writing Idiom, there were a lot of looks to the side. A lot of ideas came from 
-[gettext](https://hex.pm/packages/gettext), which is the main library in Elixir right now when it comes to internationalisation, [i18next](https://i18next.com)
-who I stole the file format from, the [Unicode CLDR Project](https://cldr.unicode.org/index) which is an absolutely invaluable resource, and my team at work
-who I forced to give me some feedback early on in development. Y'all are great.
+Thanks to the team behind `gettext` for creating the current de-facto localisation library in Elixir, the
+[i18next](https://www.i18next.com) team for giving me a ton of inspiration around the API, and my team at work
+that got an early look at this and gave some valuable feedback.

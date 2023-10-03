@@ -38,7 +38,7 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
       <span class="ml-3 text-subtext">{formattedDate}</span>
     </time>
     <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
-    {shownHeadings.length > 2 && <nav class="mt-8 border-4 border-lavender rounded-lg px-8 py-6">
+    {shownHeadings.length > 2 && <nav class="mt-8 border-4 border-lavender rounded-xl px-8 py-6">
       <h2 class="text-2xl font-bold">In this post</h2>
       <ol class="mt-5 space-y-2">
         {
