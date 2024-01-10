@@ -6,11 +6,11 @@ import PageMeta from "../../components/PageMeta.astro";
 import Renderer from "../../components/Renderer.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
+	const posts = await getCollection("posts");
 
-  return posts.map((post) => {
-    return { params: { slug: post.slug } };
-  });
+	return posts.map((post) => {
+		return { params: { slug: post.slug } };
+	});
 }
 
 const { slug } = Astro.params;
@@ -21,48 +21,44 @@ const { Content, headings } = await entry.render();
 const shownHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
+	year: "numeric",
+	month: "short",
+	day: "numeric",
 });
 ---
 
 <PageLayout>
-  <PageMeta title={data.title} description={data.description} slot="meta" />
-  <Fragment slot="main">
-    <time
-      datetime={data.date.toISOString()}
-      class="order-first mt-4 flex items-center"
-    >
-      <span class="h-4 w-0.5 rounded-full bg-lavender"></span>
-      <span class="ml-3 text-subtext">{formattedDate}</span>
-    </time>
-    <h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
-    <p class="text-xl mt-6 font-light">{data.description}</p>
-    {shownHeadings.length > 2 && <nav class="mt-8 border-4 border-lavender rounded-xl px-8 py-6">
-      <h2 class="text-2xl font-bold">In this post</h2>
-      <ol class="mt-5 space-y-2">
-        {
-          shownHeadings.map((h) => {
-            const className =
-              "text-subtext text-lg hover:underline hover:decoration-lavender" +
-              (h.depth == 3 ? " ml-3" : "");
-            const href = "#" + h.slug;
+	<PageMeta title={data.title} description={data.description} slot="meta" />
+	<Fragment slot="main">
+		<time datetime={data.date.toISOString()} class="order-first mt-4 flex items-center">
+			<span class="h-4 w-0.5 rounded-full bg-lavender"></span>
+			<span class="text-subtext ml-3">{formattedDate}</span>
+		</time>
+		<h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
+		<p class="mt-6 text-xl font-light">{data.description}</p>
+		{
+			shownHeadings.length > 2 && (
+				<nav class="mt-8 rounded-xl border-4 border-lavender px-8 py-6">
+					<h2 class="text-2xl font-bold">In this post</h2>
+					<ol class="mt-5 space-y-2">
+						{shownHeadings.map((h) => {
+							const className =
+								"text-subtext text-lg hover:underline hover:decoration-lavender" +
+								(h.depth == 3 ? " ml-3" : "");
+							const href = "#" + h.slug;
 
-            return (
-              <li class={className}>
-                <a href={href}>{h.text}</a>
-              </li>
-            );
-          })
-        }
-      </ol>
-    </nav>
-    }
-    <div
-      class="prose prose-catppuccin mt-10 max-w-full text-justify sm:prose-lg"
-    >
-      <Content />
-    </div>
-  </Fragment>
+							return (
+								<li class={className}>
+									<a href={href}>{h.text}</a>
+								</li>
+							);
+						})}
+					</ol>
+				</nav>
+			)
+		}
+		<div class="prose prose-catppuccin mt-10 max-w-full text-justify sm:prose-lg">
+			<Content />
+		</div>
+	</Fragment>
 </PageLayout>

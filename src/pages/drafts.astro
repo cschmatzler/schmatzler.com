@@ -5,24 +5,23 @@ import PageMeta from "../components/PageMeta.astro";
 import PostList from "../components/PostList.astro";
 
 const posts = await getCollection("posts", ({ data }) => {
-  return data.draft === true;
+	return data.draft === true;
 });
-const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
-);
+const sortedPosts = posts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 
 const { page } = Astro.props;
 ---
 
 <PageLayout>
-  <PageMeta title={`Drafts | The Medium Place`} slot="meta" />
-  <section slot="main">
-    <h1 class="mt-4 text-4xl font-bold tracking-tight">Drafts</h1>
-    <p class="text-subtext text-lg my-10">
-      I don't mind working out in the open, but for your own sanity, you should probably not read these. Or, expect to be shocked by the lack of quality.
-      I write down scraps and ideas here. Some of these might be a little further down the pipeline, but still never see the light of day. Some might become
-      good one day, and you will be able to see greatness in the making. Chance is pretty low, though.
-    </p>
-    <PostList posts={posts} />
-  </section>
+	<PageMeta title={`Drafts | The Medium Place`} slot="meta" />
+	<section slot="main">
+		<h1 class="mt-4 text-4xl font-bold tracking-tight">Drafts</h1>
+		<p class="text-subtext my-10 text-lg">
+			I don't mind working out in the open, but for your own sanity, you should probably not read these. Or,
+			expect to be shocked by the lack of quality. I write down scraps and ideas here. Some of these might be
+			a little further down the pipeline, but still never see the light of day. Some might become good one
+			day, and you will be able to see greatness in the making. Chance is pretty low, though.
+		</p>
+		<PostList posts={posts} />
+	</section>
 </PageLayout>

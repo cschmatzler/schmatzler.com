@@ -1,56 +1,50 @@
 ---
-import {ViewTransitions} from 'astro:transitions';
+import { ViewTransitions } from "astro:transitions";
 import EmailIcon from "../components/icons/email.astro";
 import GitHubIcon from "../components/icons/github.astro";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <slot name="meta" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link
-      href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.bunny.net/css2?family=Fira+Code:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <ViewTransitions />
-  </head>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<slot name="meta" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="preconnect" href="https://fonts.bunny.net" />
+		<link
+			href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link href="https://fonts.bunny.net/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+		<ViewTransitions />
+	</head>
 
-  <body class="mx-auto flex max-w-[850px] flex-col bg-base px-4 py-8 text-text">
-    <header class="flex flex-col">
-      <div class="flex">
-        <nav class="flex-grow">
-          <section>
-            <ul class="flex space-x-6">
-              <li><a href="/">Home</a></li>
-              <li><a href="/posts/1">Posts</a></li>
-            </ul>
-          </section>
-        </nav>
-        <div class="space-x-2">
-          <a href="mailto:christoph@medium.place" aria-label="Email me">
-            <EmailIcon title="Email" />
-          </a>
-          <a href="https://github.com/cschmatzler" aria-label="me on GitHub">
-            <GitHubIcon title="GitHub" />
-          </a>
-        </div>
-      </div>
-      <div
-        class="mt-2 h-1 w-full rounded-full bg-gradient-to-br from-mauve to-pink"
-      >
-      </div>
-    </header>
+	<body class="latte mx-auto flex max-w-[850px] flex-col bg-base px-4 py-8 text-text">
+		<header class="flex flex-col">
+			<div class="flex">
+				<nav class="flex-grow">
+					<section>
+						<ul class="flex space-x-6">
+							<li><a href="/">Home</a></li>
+							<li><a href="/posts/1">Posts</a></li>
+						</ul>
+					</section>
+				</nav>
+				<div class="space-x-2">
+					<a href="mailto:christoph@medium.place" aria-label="Email me">
+						<EmailIcon title="Email" />
+					</a>
+					<a href="https://github.com/cschmatzler" aria-label="me on GitHub">
+						<GitHubIcon title="GitHub" />
+					</a>
+				</div>
+			</div>
+			<div class="mt-2 h-1 w-full rounded-full bg-gradient-to-br from-mauve to-pink"></div>
+		</header>
 
-    <main id="main" class="mt-4 pb-8">
-      <slot name="main" />
-    </main>
-  </body>
+		<main id="main" class="mt-4 pb-8">
+			<slot name="main" />
+		</main>
+	</body>
 </html>
