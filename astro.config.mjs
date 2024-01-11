@@ -5,5 +5,5 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
 	site: "https://medium.place",
-	integrations: [tailwind(), markdoc(), sitemap()]
+	integrations: [tailwind(), markdoc(), sitemap()],
 });

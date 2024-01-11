@@ -8,8 +8,8 @@ export default defineMarkdocConfig({
 			render: component("./src/components/Admonition.astro"),
 			attributes: {
 				title: { type: String },
-			}
-		}
+			},
+		},
 	},
 	extends: [
 		shiki({

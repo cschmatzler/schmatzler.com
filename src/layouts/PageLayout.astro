@@ -2,6 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import EmailIcon from "../components/icons/email.astro";
 import GitHubIcon from "../components/icons/github.astro";
+import MastodonIcon from "../components/icons/mastodon.astro";
 ---
 
 <!doctype html>
@@ -11,6 +12,7 @@ import GitHubIcon from "../components/icons/github.astro";
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<slot name="meta" />
 		<link rel="me" href="https://hachyderm.io/@cschmatzler" />
+		<link rel="me" href="https://github.com/cschmatzler" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="preconnect" href="https://fonts.bunny.net" />
 		<link
@@ -29,12 +31,16 @@ import GitHubIcon from "../components/icons/github.astro";
 						<ul class="flex space-x-6">
 							<li><a href="/">Home</a></li>
 							<li><a href="/posts/1">Posts</a></li>
+							<li><a href="/now">Now</a></li>
 						</ul>
 					</section>
 				</nav>
 				<div class="space-x-2">
 					<a href="mailto:christoph@medium.place" aria-label="Email me">
 						<EmailIcon title="Email" />
+					</a>
+					<a href="https://hachyderm.io/@cschmatzler" aria-label="me on Mastodon">
+						<MastodonIcon title="Mastodon" />
 					</a>
 					<a href="https://github.com/cschmatzler" aria-label="me on GitHub">
 						<GitHubIcon title="GitHub" />
