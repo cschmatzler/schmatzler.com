@@ -28,7 +28,7 @@ export async function GET(context: APIContext) {
 		title: "Christoph Schmatzler",
 		description:
 			"Somewhere inbetween literal heaven and hell, unable to decide whether this is finally an attempt at creating a professional presence, an outlet for writing practice or wanting to micro- blog about whatever I had for dinner last night, you are definitely in for a surprise with every link you follow.",
-		site: context?.site!,
+		site: context.site ?? "https://medium.place",
 		items: rssItems,
 	});
 }
