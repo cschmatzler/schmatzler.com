@@ -10,6 +10,12 @@ export default defineMarkdocConfig({
 				title: { type: String },
 			},
 		},
+		image: {
+			render: component("./src/components/Image.astro"),
+			attributes: {
+				src: { type: String }
+			}
+		}
 	},
 	extends: [
 		shiki({

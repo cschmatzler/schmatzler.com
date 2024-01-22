@@ -1,9 +1,13 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import markdoc from "@astrojs/markdoc";
 import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
 
+// https://astro.build/config
 export default defineConfig({
 	site: "https://medium.place",
-	integrations: [tailwind(), markdoc(), sitemap()],
+	integrations: [tailwind(), sitemap(), mdx()],
+	devToolbar: {
+		enabled: false
+	}
 });
