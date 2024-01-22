@@ -5,7 +5,7 @@ secrets:
   - 5ccd3882-4ca6-46c7-b6bc-f694a202de40
 
 sources:
-  - git@git.sr.ht:~cschmatzler/leuchtturm-man
+  - git@git.sr.ht:~cschmatzler/medium-place
 
 tasks:
   - setup: |
@@ -15,7 +15,7 @@ tasks:
       sudo usermod -aG docker $USER
       curl -fsSL https://mise.jdx.dev/install.sh | sh
       mise settings set experimental true
-      cd leuchtturm-man
+      cd medium-place
       mise trust -a
       mise install -y
       mise exec -- earthly org select leuchtturm
@@ -23,10 +23,10 @@ tasks:
   - ci: |
       export PATH=$HOME/.local/bin/:$PATH
       export MISE_ENV=ci
-      cd leuchtturm-man
+      cd medium-place
       mise exec -- earthly +ci
   - deploy: |
       export PATH=$HOME/.local/bin/:$PATH
       export MISE_ENV=ci
-      cd leuchtturm-man
+      cd medium-place
       mise run deploy
