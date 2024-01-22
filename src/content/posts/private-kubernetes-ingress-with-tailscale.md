@@ -65,7 +65,7 @@ envoy:
   useHostPort: false
   service:
     type: ClusterIP
-    externalTrafficPolicy: ''
+    externalTrafficPolicy: ""
     clusterIP: 10.96.0.60
 ```
 
@@ -170,9 +170,9 @@ metadata:
   labels:
     app.kubernetes.io/part-of: tailscale
 rules:
-  - apiGroups: ['']
-    resources: ['secrets']
-    verbs: ['create', 'get', 'update']
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "get", "update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -282,7 +282,7 @@ spec:
 
           env:
             - name: TS_USERSPACE
-              value: 'false'
+              value: "false"
             - name: TS_AUTH_KEY
               valueFrom:
                 secretKeyRef:
@@ -434,7 +434,7 @@ spec:
 
 Am I telling you that we can just add a single annotation to our `Ingress` in
 order to make ExternalDNS create a `CNAME` record to our tailnet node's internal DNS record? Yes, yes,
-I am.  
+I am.
 
 We can now add as many `Ingress` resources as we'd like, for whatever
 service, and they will be available from within our tailnet as long as we add

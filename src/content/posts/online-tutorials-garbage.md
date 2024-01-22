@@ -12,16 +12,16 @@ whatever it is they are teaching.
 So then you go back to your empty editor... and then what?
 
 Online tutorials all suck.  
-They only ever focus on the happy path, when we actually learn through repeated failure and working through the challenges that arise. 
-So, cool, your post with six different popups asking me to subscribe to a newsletter can give me the solution to the exact problem you 
-designed to write about, for a very narrow set of specific circumstances. This is not how real projects work. I can think of 700 things 
-that might go wrong before getting any of these posts to a working state, requiring deeper knowledge of the topic and troubleshooting 
+They only ever focus on the happy path, when we actually learn through repeated failure and working through the challenges that arise.
+So, cool, your post with six different popups asking me to subscribe to a newsletter can give me the solution to the exact problem you
+designed to write about, for a very narrow set of specific circumstances. This is not how real projects work. I can think of 700 things
+that might go wrong before getting any of these posts to a working state, requiring deeper knowledge of the topic and troubleshooting
 skills, that are completely ignored.
 
 Actual skill comes from running into issues, learning how to solve them, running into the same issue again approximately eight
 times judging yourself for having forgotten the solution from the previous times, and then at some point internalising how everything
-is actually functioning. There, you achieved true knowledge about the subject matter. The worst thing is that this entire process is 
-something the author of a tutorial has gone through. They fucked around and fonud out. They are sourcing knowledge from their hours, 
+is actually functioning. There, you achieved true knowledge about the subject matter. The worst thing is that this entire process is
+something the author of a tutorial has gone through. They fucked around and fonud out. They are sourcing knowledge from their hours,
 days and years of frustration going through failure, and then only give you the infinitely tiny part of it that is the actual outcome.
 
 This issue is then multiplied by the fact that most junior developers jump to their favorite search engine when they encounter an issue,

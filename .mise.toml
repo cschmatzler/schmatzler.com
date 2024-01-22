@@ -1,2 +1,19 @@
 [tools]
 node = "21.6.0"
+earthly = "0.8.0-rc2"
+
+[tasks.deps]
+description = "Install dependencies"
+run = "npm i"
+sources = ["package.json", "package-lock.json"]
+outputs = ["node_modules/**"]
+
+[tasks.format]
+description = "Format"
+depends = ["deps"]
+run = ["npx prettier -w ."]
+
+[tasks.update-deps]
+description = "Update dependencies"
+depends = ["deps"]
+run = ["npx npm-check-updates --deep --upgrade --install always"]

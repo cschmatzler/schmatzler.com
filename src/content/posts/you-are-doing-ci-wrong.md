@@ -9,15 +9,15 @@ description: |
 Continuous integration is ubiquitous. Almost every project out there has some kind of pipeline set up, and most of them I've seen are terrible.  
 The idea is simple: have all your lints and tests run before something is published, in a consistent environment, preventing a release if something is smelling
 weird. It's a good idea, and there really isn't a codebase where a requirement of running checks is not a good idea. The problem arises when suddenly every
-single tool becomes a nail once you introduce CI as a hammer.  
+single tool becomes a nail once you introduce CI as a hammer.
 
 ## Moving the wrong things into CI
 
 There are a ton of things that make sense to run in CI - the most obvious being tests. Engineers might have different machines, operating systems, runtime
-versions, dependency versions. There are an infinite amount of permutations on what a developer setup might look like, and (for server-hosted applications) 
+versions, dependency versions. There are an infinite amount of permutations on what a developer setup might look like, and (for server-hosted applications)
 only one or at most a handful that we're running on in production. Running our runtime tests on a machine that is similar to the production setup becomes
 the obvious choice.  
-There are also checks that we moved to CI that are not a good fit.  
+There are also checks that we moved to CI that are not a good fit.
 
 Let's look at formatting. Every formatter I've seen has some kind of `--check-formatted` option. It doesn't write to any files, but exits with a non-0 code if
 it finds an unformatted file. The formatter has some distinct differences to running a test suite:
@@ -29,7 +29,7 @@ it finds an unformatted file. The formatter has some distinct differences to run
 Couple these two points with the fact that CI has a somewhat slow feedback loop: you push a change, wait a few seconds for it to be picked up by a CI runner,
 setup the environment, install OS dependencies, fetch project dependencies, then run your formatting check. At some point, open the tab in your browser again
 to see the `The following files are not formatted: [...]` error, run the formatter, do a `format` commit and repeat. This can, depending on the pipeline setup,
-take minutes. In contrast, running the Elixir formatter on a large project I have laying around takes about 3 seconds (and the Elixir formatter is not in the 
+take minutes. In contrast, running the Elixir formatter on a large project I have laying around takes about 3 seconds (and the Elixir formatter is not in the
 group of fastest tools since it spins up a BEAM VM). That's multiple orders of magnitude of difference in terms of feedback loop.
 
 ### What to do instead
@@ -51,9 +51,9 @@ CI pipelines run **a lot**. I'm on a small team, and there's barely any time of 
 slow and required. This has a ton of drawbacks, the two main ones for me being:
 
 - Deploying a hotfix takes an eternity. Found a typo somewhere that apparently wasn't covered by a test? Something missed during a review? It happens, and
-  that's okay. Our tools should empower us to quickly dish out a fix so the impact on customers is restricted to a short time-frame. Once you have the 
+  that's okay. Our tools should empower us to quickly dish out a fix so the impact on customers is restricted to a short time-frame. Once you have the
   combination of required and slow pipelines, the impact increases massively.
-- Engineers have to context switch. Or, well, take a lot of coffee breaks. The disadvantage of switching between different things is well-known. My tiny pull 
+- Engineers have to context switch. Or, well, take a lot of coffee breaks. The disadvantage of switching between different things is well-known. My tiny pull
   request taking 20 minutes to run tests means that I will have 20 minutes of downtime before I can continue working on it, fix tests or merge it. That sounds
   like a good amount of time that I don't want to just be sitting around, but also not enough to get into focus on a different ticket to work on.
 

@@ -6,14 +6,20 @@ description: |
   We've all built services that fall outside of our core domain. Now it's time to stop.
 ---
 
-import {Image} from "astro:assets";
+import { Image } from "astro:assets";
 import raiseHand from "../../assets/raise-hand.jpg";
 import coreDomain from "../../assets/ddd-core-domain.jpg";
 
 Raise your hand if you've ever built a piece of code that you could've bought as a service. One that is still
 running somewhere, taking time to maintain and upgrade.
 
-<Image src={raiseHand} alt="Man raising his hand." width="1080" quality="80" class="rounded-xl max-h-72 w-auto m-auto" />
+<Image
+	src={raiseHand}
+	alt="Man raising his hand."
+	width="1080"
+	quality="80"
+	class="m-auto max-h-72 w-auto rounded-xl"
+/>
 
 Following Domain Driven Design, we can split domains into three basic groups: Core, Generic and Supporting.
 The Core domains are our focus: they have the highest business differentiation, but also enough complexity
@@ -23,13 +29,21 @@ competitors, or easy enough to reimplement by them should they be a big differen
 Generic subdomains: things that basically every service needs, like account management, notifications or
 subscription management.
 
-<Image src={coreDomain} alt="Diagram of Strategic Domain Driven Design: Core, Generic and Supporting Domains."
-width="1080" quality="80" class="rounded-xl max-h-[560px] m-auto w-auto" />
-<span class="text-center block text-sm mt-2 sm:-mt-6 text-subtext0">Chart by [`ddd-crew`](https://github.com/ddd-crew/core-domain-charts?tab=readme-ov-file), licensed under [CC-BY-SA-4.0](https://github.com/ddd-crew/core-domain-charts/blob/ac5e2e4442062a897b027f666d9e9961656bd628/LICENCE.md)</span>
+<Image
+	src={coreDomain}
+	alt="Diagram of Strategic Domain Driven Design: Core, Generic and Supporting Domains."
+	width="1080"
+	quality="80"
+	class="m-auto max-h-[560px] w-auto rounded-xl"
+/>
+<span class="mt-2 block text-center text-sm text-subtext0 sm:-mt-6">
+	Chart by [`ddd-crew`](https://github.com/ddd-crew/core-domain-charts?tab=readme-ov-file), licensed under
+	[CC-BY-SA-4.0](https://github.com/ddd-crew/core-domain-charts/blob/ac5e2e4442062a897b027f666d9e9961656bd628/LICENCE.md)
+</span>
 
 I've been guilty of building services that fall squarely into the Generic field. Payments service, anyone?
 Spending way too much time figuring out account security and sending password reset emails? Been there, done
-that.  
+that.
 
 Now, I always remind myself that I only have limited capacity. Both time and resources are limited. Thus, it
 is important to identify the places where we should invest these resources: what domain gives us the biggest

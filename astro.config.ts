@@ -8,6 +8,6 @@ export default defineConfig({
 	site: "https://medium.place",
 	integrations: [tailwind(), sitemap(), mdx()],
 	devToolbar: {
-		enabled: false
-	}
+		enabled: false,
+	},
 });

@@ -1,7 +1,8 @@
 import rss from "@astrojs/rss";
+import type { APIContext } from "astro";
 import { getCollection } from "astro:content";
 
-export async function GET(context: any) {
+export async function GET(context: APIContext) {
 	const posts = await getCollection("posts", ({ data }) => {
 		return data.draft === false;
 	});
@@ -13,7 +14,7 @@ export async function GET(context: any) {
 			const title = data.title;
 			const pubDate = data.date;
 			const description = data.description;
-			const link = `${context.site.origin}/blog/${slug}`;
+			const link = `${context.site?.origin}/blog/${slug}`;
 
 			return {
 				title,
@@ -27,7 +28,7 @@ export async function GET(context: any) {
 		title: "Christoph Schmatzler",
 		description:
 			"Somewhere inbetween literal heaven and hell, unable to decide whether this is finally an attempt at creating a professional presence, an outlet for writing practice or wanting to micro- blog about whatever I had for dinner last night, you are definitely in for a surprise with every link you follow.",
-		site: context.site,
+		site: context?.site!,
 		items: rssItems,
 	});
 }

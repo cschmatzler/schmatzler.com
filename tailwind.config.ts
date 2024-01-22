@@ -1,8 +1,9 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 import { flavors } from "@catppuccin/palette";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
 	content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
 	theme: {
 		extend: {
@@ -35,7 +36,7 @@ module.exports = {
 							"padding-right": "6px",
 						},
 						pre: {
-							border: "4px solid " + flavors.latte.colors.crust.hex,
+							border: `4px solid ${flavors.latte.colors.crust.hex}`,
 							"border-radius": "0.5rem",
 						},
 					},
@@ -61,4 +62,4 @@ module.exports = {
 		require("@catppuccin/tailwindcss")({ defaultFlavor: "latte" }),
 		require("@tailwindcss/typography"),
 	],
-};
+} satisfies Config;

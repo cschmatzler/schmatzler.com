@@ -11,12 +11,12 @@ There was a time when my team was tasked with updating the translations in our a
 a few strings according to new legal requirements. At the time, our workflow included updating the
 translations in an external editor, exporting them to the file format of each codebase, adding a commit with
 the updated file, and submitting a new version to the App and Play Store - way too many manual steps that made
-this a very unpopular task to pick up. It was a complete pain in the ass.  
+this a very unpopular task to pick up. It was a complete pain in the ass.
 
 This is one situation where I felt like our tooling setup really failed us. There are so many little things we
 could have done: automatically synchronise to our repository, for example. Still, there is one limitation that
 cannot be overcome when bundling our translation files with our releases: having to build a new release and,
-for mobile applications, going through the annoying review process of the Stores.  
+for mobile applications, going through the annoying review process of the Stores.
 
 Over time, the idea of over-the-air localisation became more and more lovely to me. Then, I ended up working
 in the localisation industry, and realised that what I wanted wasn't possible in Elixir at the moment. There
@@ -77,21 +77,21 @@ this:
 
 ```json
 {
-  "en": {
-    "default": {
-      "Create your account": "Create your account"
-    }
-  },
-  "en-US": {
-    "default": {
-      "Take the elevator": "Take the elevator"
-    }
-  },
-  "en-GB": {
-    "default": {
-      "Take the elevator": "Take the lift"
-    }
-  }
+	"en": {
+		"default": {
+			"Create your account": "Create your account"
+		}
+	},
+	"en-US": {
+		"default": {
+			"Take the elevator": "Take the elevator"
+		}
+	},
+	"en-GB": {
+		"default": {
+			"Take the elevator": "Take the lift"
+		}
+	}
 }
 ```
 
@@ -104,7 +104,7 @@ way, you can define regional differences without duplicating every single key.
 
 ### Fallback locales
 
-Ever have a language that is not yet *fully* there translation-wise, missing a key here and there, but still
+Ever have a language that is not yet _fully_ there translation-wise, missing a key here and there, but still
 ready enough to be made available for the users? Know that the user speaks another language? Add it to the
 resolution hierarchy as fallback language, and it'll transparently show the message in that language. This is
 also quite handy when you are targeting users from multi-lingual countries. For some Swiss people, for

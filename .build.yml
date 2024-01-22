@@ -1,0 +1,32 @@
+image: debian/bookworm
+
+secrets:
+  - ffa3e51d-1320-4d2c-bc33-bcb3149ec3ef
+  - 96c9ead5-64a2-460a-90f0-75a22fc986a5
+
+sources:
+  - git@git.sr.ht:~cschmatzler/leuchtturm-man
+
+tasks:
+  - setup: |
+      export PATH=$HOME/.local/bin/:$PATH
+      export MISE_ENV=ci
+      curl -fsSL https://get.docker.com | sh
+      sudo usermod -aG docker $USER
+      curl -fsSL https://mise.jdx.dev/install.sh | sh
+      mise settings set experimental true
+      cd leuchtturm-man
+      mise trust -a
+      mise install -y
+      mise exec -- earthly org select leuchtturm
+      mise exec -- earthly sat select builds-sr-ht
+  - ci: |
+      export PATH=$HOME/.local/bin/:$PATH
+      export MISE_ENV=ci
+      cd leuchtturm-man
+      mise exec -- earthly +ci
+  - deploy: |
+      export PATH=$HOME/.local/bin/:$PATH
+      export MISE_ENV=ci
+      cd leuchtturm-man
+      mise run deploy
