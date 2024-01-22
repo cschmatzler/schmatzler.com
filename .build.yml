@@ -2,7 +2,7 @@ image: debian/bookworm
 
 secrets:
   - ffa3e51d-1320-4d2c-bc33-bcb3149ec3ef
-  - 96c9ead5-64a2-460a-90f0-75a22fc986a5
+  - 5ccd3882-4ca6-46c7-b6bc-f694a202de40
 
 sources:
   - git@git.sr.ht:~cschmatzler/leuchtturm-man
