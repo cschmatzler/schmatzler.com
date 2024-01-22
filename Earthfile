@@ -14,7 +14,7 @@ node-base:
 COPY_SOURCES:
   FUNCTION
 
-  COPY --keep-ts --dir src .
+  COPY --keep-ts --dir public src .
   COPY --keep-ts astro.config.ts tailwind.config.ts tsconfig.json .
 
 ci:
