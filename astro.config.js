@@ -6,7 +6,7 @@ import catppuccinLatte from "./src/shiki/catppuccin-latte";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://medium.place",
+  site: "https://schmatzler.com",
   integrations: [tailwind(), sitemap(), mdx()],
   devToolbar: {
     enabled: false,

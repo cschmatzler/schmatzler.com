@@ -161,10 +161,7 @@ export default {
 		},
 		{
 			name: "JSON punctuation",
-			scope: [
-				"punctuation.separator.dictionary.pair.json.comments",
-				"punctuation.separator.array.json.comments",
-			],
+			scope: ["punctuation.separator.dictionary.pair.json.comments", "punctuation.separator.array.json.comments"],
 			settings: {
 				foreground: "#179299",
 			},
@@ -470,21 +467,14 @@ export default {
 		},
 		{
 			name: "C++ constructor/destructor",
-			scope: [
-				"entity.name.function.definition.special.constructor",
-				"entity.name.function.definition.special.member.destructor",
-			],
+			scope: ["entity.name.function.definition.special.constructor", "entity.name.function.definition.special.member.destructor"],
 			settings: {
 				foreground: "#7287fd",
 			},
 		},
 		{
 			name: "C++ directive",
-			scope: [
-				"keyword.control.directive",
-				"keyword.other.using.directive",
-				"punctuation.definition.directive",
-			],
+			scope: ["keyword.control.directive", "keyword.other.using.directive", "punctuation.definition.directive"],
 			settings: {
 				foreground: "#179299",
 				fontStyle: "italic",
@@ -567,11 +557,7 @@ export default {
 		},
 		{
 			name: "C++/C#",
-			scope: [
-				"entity.name.label.cs",
-				"entity.name.scope-resolution.function.call",
-				"entity.name.scope-resolution.function.definition",
-			],
+			scope: ["entity.name.label.cs", "entity.name.scope-resolution.function.call", "entity.name.scope-resolution.function.definition"],
 			settings: {
 				foreground: "#fe640b",
 			},
@@ -804,10 +790,7 @@ export default {
 		},
 		{
 			name: "css color standard name",
-			scope: [
-				"support.constant.color.w3c-standard-color-name.css",
-				"support.constant.color.w3c-standard-color-name.scss",
-			],
+			scope: ["support.constant.color.w3c-standard-color-name.css", "support.constant.color.w3c-standard-color-name.scss"],
 			settings: {
 				foreground: "#df8e1d",
 			},
@@ -1564,12 +1547,7 @@ export default {
 		},
 		{
 			name: "php types",
-			scope: [
-				"storage.type.php",
-				"meta.other.type.phpdoc.php",
-				"keyword.other.type.php",
-				"keyword.other.array.phpdoc.php",
-			],
+			scope: ["storage.type.php", "meta.other.type.phpdoc.php", "keyword.other.type.php", "keyword.other.array.phpdoc.php"],
 			settings: {
 				foreground: "#fe640b",
 			},
@@ -1611,12 +1589,7 @@ export default {
 		},
 		{
 			name: "support php constants",
-			scope: [
-				"support.constant.ext.php",
-				"support.constant.std.php",
-				"support.constant.core.php",
-				"support.constant.parser-token.php",
-			],
+			scope: ["support.constant.ext.php", "support.constant.std.php", "support.constant.core.php", "support.constant.parser-token.php"],
 			settings: {
 				foreground: "#df8e1d",
 			},
@@ -1728,12 +1701,7 @@ export default {
 		},
 		{
 			name: "ts primitive/builtin types",
-			scope: [
-				"support.type.primitive.ts",
-				"support.type.builtin.ts",
-				"support.type.primitive.tsx",
-				"support.type.builtin.tsx",
-			],
+			scope: ["support.type.primitive.ts", "support.type.builtin.ts", "support.type.primitive.tsx", "support.type.builtin.tsx"],
 			settings: {
 				foreground: "#fe640b",
 			},

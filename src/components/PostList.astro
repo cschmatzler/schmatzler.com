@@ -1,33 +1,29 @@
 ---
+import type { CollectionEntry } from "astro:content";
 export interface Props {
-	posts: string[];
+	posts: CollectionEntry<"posts">[];
 }
 
 const { posts } = Astro.props;
 ---
 
-<ul class="flex flex-col divide-y divide-sky">
+<ul class="flex flex-col gap-1">
 	{
 		posts.map((post) => {
-			const formattedDate = new Date(post.data.date).toLocaleDateString("en-gb", {
-				year: "numeric",
-				month: "short",
-				day: "numeric",
-			});
+			const formattedDate =
+				post.data.date.getFullYear() +
+				"-" +
+				String(post.data.date.getMonth() + 1).padStart(2, "0") +
+				"-" +
+				String(post.data.date.getDate()).padStart(2, "0");
 
 			return (
-				<li class="flex flex-col">
-					<a
-						href={`/post/${post.slug}`}
-						class="my-6 rounded-lg px-6 py-8 hover:bg-crust hover:ring-2 hover:ring-sky"
-					>
-						<div class="flex flex-col sm:flex-row-reverse sm:items-center">
-							<div class="text-overlay flex-shrink-0 font-light sm:ml-6">
-								<time datetime={post.data.date.toISOString()}>{formattedDate}</time>
-							</div>
-							<span class="mt-2 flex-grow text-2xl sm:m-0">{post.data.title}</span>
-						</div>
-						<p class="text-subtext prose mt-5 text-lg">{post.data.description}</p>
+				<li class="flex gap-5">
+					<time datetime={post.data.date.toISOString()} class="text-overlay w-24 font-light">
+						{formattedDate}
+					</time>
+					<a href={`/post/${post.slug}`} class="hover:underline">
+						{post.data.title}
 					</a>
 				</li>
 			);

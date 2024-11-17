@@ -1,50 +1,44 @@
 ---
-import { getCollection, getEntryBySlug } from "astro:content";
-import { SITE_URL } from "../../config";
+import { getCollection, getEntryBySlug, type CollectionEntry } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import PageMeta from "../../components/PageMeta.astro";
-import Renderer from "../../components/Renderer.astro";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("posts");
 
-	return posts.map((post) => {
+	return posts.map((post: CollectionEntry<"posts">) => {
 		return { params: { slug: post.slug } };
 	});
 }
+
+type Heading = { text: string; depth: number; slug: string };
 
 const { slug } = Astro.params;
 const entry = await getEntryBySlug("posts", slug);
 const { data } = entry;
 const { Content, headings } = await entry.render();
 
-const shownHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const shownHeadings = headings.filter((h: Heading) => h.depth === 2 || h.depth === 3);
 
-const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
-	year: "numeric",
-	month: "short",
-	day: "numeric",
-});
+const formattedDate =
+	data.date.getFullYear() + "-" + String(data.date.getMonth() + 1).padStart(2, "0") + "-" + String(data.date.getDate()).padStart(2, "0");
 ---
 
 <PageLayout>
 	<PageMeta title={data.title} description={data.description} slot="meta" />
 	<Fragment slot="main">
-		<time datetime={data.date.toISOString()} class="order-first mt-4 flex items-center">
-			<span class="h-4 w-0.5 rounded-full bg-lavender"></span>
-			<span class="text-subtext ml-3">{formattedDate}</span>
+		<time datetime={data.date.toISOString()} class="order-first flex items-center">
+			<span class="mr-2 h-4 w-0.5 rounded-full bg-mauve"></span>
+			<span class="text-overlay w-24 font-light">{formattedDate}</span>
 		</time>
-		<h1 class="mt-4 text-4xl font-bold tracking-tight">{data.title}</h1>
-		<p class="mt-6 text-xl font-light">{data.description}</p>
+		<h1 class="mt-2 text-xl font-semibold tracking-tight">{data.title}</h1>
 		{
 			shownHeadings.length > 2 && (
 				<nav class="mt-8 rounded-xl border-4 border-lavender px-8 py-6">
 					<h2 class="text-2xl font-bold">In this post</h2>
 					<ol class="mt-5 space-y-2">
-						{shownHeadings.map((h) => {
-							const className =
-								"text-subtext text-lg hover:underline hover:decoration-lavender" +
-								(h.depth == 3 ? " ml-3" : "");
+						{shownHeadings.map((h: Heading) => {
+							const className = "text-subtext text-lg hover:underline hover:decoration-lavender" + (h.depth == 3 ? " ml-3" : "");
 							const href = "#" + h.slug;
 
 							return (
@@ -57,7 +51,7 @@ const formattedDate = new Date(data.date).toLocaleDateString("en-gb", {
 				</nav>
 			)
 		}
-		<div class="prose prose-catppuccin mt-10 max-w-full text-justify sm:prose-lg">
+		<div class="prose prose-catppuccin max-w-full text-justify">
 			<Content />
 		</div>
 	</Fragment>

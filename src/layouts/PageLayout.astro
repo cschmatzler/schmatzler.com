@@ -1,8 +1,6 @@
 ---
-import { ViewTransitions } from "astro:transitions";
 import EmailIcon from "../components/icons/email.astro";
 import GitHubIcon from "../components/icons/github.astro";
-import MastodonIcon from "../components/icons/mastodon.astro";
 ---
 
 <!doctype html>
@@ -11,17 +9,12 @@ import MastodonIcon from "../components/icons/mastodon.astro";
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<slot name="meta" />
-		<link rel="me" href="https://hachyderm.io/@cschmatzler" />
 		<link rel="me" href="https://github.com/cschmatzler" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" type="application/rss+xml" title=".rss" href="/rss.xml" />
 		<link rel="preconnect" href="https://fonts.bunny.net" />
-		<link
-			href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-			rel="stylesheet"
-		/>
+		<link href="https://fonts.bunny.net/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
 		<link href="https://fonts.bunny.net/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
-		<ViewTransitions />
 	</head>
 
 	<body class="latte mx-auto flex max-w-[850px] flex-col bg-base px-4 py-8 text-text">
@@ -29,9 +22,8 @@ import MastodonIcon from "../components/icons/mastodon.astro";
 			<div class="flex">
 				<nav class="flex-grow">
 					<section>
-						<ul class="flex space-x-6">
+						<ul class="flex space-x-4">
 							<li><a href="/">Home</a></li>
-							<li><a href="/posts/1">Posts</a></li>
 							<li><a href="/now">Now</a></li>
 						</ul>
 					</section>
@@ -40,15 +32,12 @@ import MastodonIcon from "../components/icons/mastodon.astro";
 					<a href="mailto:christoph@medium.place" aria-label="Email me">
 						<EmailIcon title="Email" />
 					</a>
-					<a href="https://hachyderm.io/@cschmatzler" aria-label="me on Mastodon">
-						<MastodonIcon title="Mastodon" />
-					</a>
 					<a href="https://github.com/cschmatzler" aria-label="me on GitHub">
 						<GitHubIcon title="GitHub" />
 					</a>
 				</div>
 			</div>
-			<div class="mt-2 h-1 w-full rounded-full bg-gradient-to-br from-mauve to-pink"></div>
+			<div class="h-[2.5px] w-full rounded-full bg-gradient-to-br from-pink to-yellow"></div>
 		</header>
 
 		<main id="main" class="mt-4 pb-8">
