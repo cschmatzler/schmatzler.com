@@ -1,6 +1,7 @@
 ---
-import EmailIcon from "../components/icons/email.astro";
-import GitHubIcon from "../components/icons/github.astro";
+import EmailIcon from "~/components/icons/email.astro";
+import GitHubIcon from "~/components/icons/github.astro";
+import "~/index.css"
 ---
 
 <!doctype html>
@@ -17,7 +18,7 @@ import GitHubIcon from "../components/icons/github.astro";
 		<link href="https://fonts.bunny.net/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
 	</head>
 
-	<body class="latte mx-auto flex max-w-[850px] flex-col bg-base px-4 py-8 text-text">
+	<body class="latte mx-auto flex max-w-[850px] flex-col bg-ctp-base px-4 py-8 text-ctp-text">
 		<header class="flex flex-col">
 			<div class="flex">
 				<nav class="flex-grow">
@@ -29,7 +30,7 @@ import GitHubIcon from "../components/icons/github.astro";
 					</section>
 				</nav>
 				<div class="space-x-2">
-					<a href="mailto:christoph@medium.place" aria-label="Email me">
+					<a href="mailto:christoph@schmatzler.com" aria-label="Email me">
 						<EmailIcon title="Email" />
 					</a>
 					<a href="https://github.com/cschmatzler" aria-label="me on GitHub">
@@ -37,7 +38,7 @@ import GitHubIcon from "../components/icons/github.astro";
 					</a>
 				</div>
 			</div>
-			<div class="h-[2.5px] w-full rounded-full bg-gradient-to-br from-pink to-yellow"></div>
+			<div class="h-[2.5px] w-full rounded-full bg-gradient-to-br from-ctp-pink to-ctp-yellow"></div>
 		</header>
 
 		<main id="main" class="mt-4 pb-8">
