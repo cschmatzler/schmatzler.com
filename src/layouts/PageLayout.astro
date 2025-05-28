@@ -30,22 +30,33 @@ const currentPath = Astro.url.pathname;
 								<a
 									href="/"
 									class={currentPath === "/"
-										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
-										: ""}>Home</a>
+										? "relative pt-3 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Home</a
+								>
 							</li>
 							<li>
 								<a
 									href="/essays"
 									class={currentPath.startsWith("/essays")
-										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
-										: ""}>Essays</a>
+										? "relative pt-3 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Essays</a
+								>
 							</li>
 							<li>
 								<a
 									href="/thoughts"
 									class={currentPath.startsWith("/thoughts")
-										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
-										: ""}>Thoughts</a>
+										? "relative pt-3 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Thoughts</a
+								>
+							</li>
+							<li>
+								<a
+									href="/photography"
+									class={currentPath.startsWith("/photography")
+										? "relative pt-3 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Photography</a
+								>
 							</li>
 							<!-- <li><a href="/now">Now</a></li> -->
 						</ul>

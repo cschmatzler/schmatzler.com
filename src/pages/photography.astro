@@ -1,0 +1,35 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageMeta from "~/components/PageMeta.astro";
+
+const albums = await getCollection("albums");
+---
+
+<PageLayout>
+	<PageMeta title="Christoph Schmatzler" slot="meta" />
+	<Fragment slot="main">
+		<h1 class="mb-8 text-2xl font-bold">Photography</h1>
+		<div class="container mx-auto grid grid-cols-2 gap-8">
+			{
+				albums.map((item) => (
+					<a href={`/photography/${item.id}`} class="group mb-4 block transition-all">
+						<Image
+							src={item.data.cover}
+							alt={item.data.title}
+							format="avif"
+							width={720}
+							quality="mid"
+							class:list={["rounded-sm transition-all", "group-hover:opacity-90 group-hover:shadow-lg"]}
+						/>
+						<div class="mt-4 text-center text-ctp-text">
+							<strong class="font-normal">{item.data.title}</strong>
+							<p class="text-xs">{item.data.description}</p>
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</Fragment>
+</PageLayout>

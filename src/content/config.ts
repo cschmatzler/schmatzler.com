@@ -18,7 +18,18 @@ const essays = defineCollection({
 	}),
 });
 
+const albums = defineCollection({
+	type: "data",
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string().optional(),
+			cover: image(),
+		}),
+});
+
 export const collections = {
-	thoughts: thoughts,
-	essays: essays,
+	thoughts,
+	essays,
+	albums,
 };
