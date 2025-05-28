@@ -5,3 +5,9 @@ draft: false
 ---
 
 The barista knows everyone's order by heart. There's something beautiful about these small human connections that happen in the spaces between our digital lives.
+
+```js
+function foo() {
+	return "bar";
+}
+```
