@@ -1,0 +1,14 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Thought from "~/components/Thought.astro";
+
+export interface Props {
+	thoughts: CollectionEntry<"thoughts">[];
+}
+
+const { thoughts } = Astro.props;
+---
+
+<div class="space-y-6">
+	{thoughts.map((thought) => <Thought thought={thought} />)}
+</div>

@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+export interface Props {
+	essays: CollectionEntry<"essays">[];
+}
+
+const { essays } = Astro.props;
+---
+
+<ul class="flex flex-col gap-1">
+	{
+		essays.map((essay) => {
+			const formattedDate =
+				essay.data.date.getFullYear() +
+				"-" +
+				String(essay.data.date.getMonth() + 1).padStart(2, "0") +
+				"-" +
+				String(essay.data.date.getDate()).padStart(2, "0");
+
+			return (
+				<li class="flex gap-5">
+					<time datetime={essay.data.date.toISOString()} class="text-overlay w-24 font-light">
+						{formattedDate}
+					</time>
+					<a href={`/essays/${essay.slug}`} class="hover:underline">
+						{essay.data.title}
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>

@@ -1,7 +1,9 @@
 ---
 import EmailIcon from "~/components/icons/email.astro";
 import GitHubIcon from "~/components/icons/github.astro";
-import "~/index.css"
+import "~/index.css";
+
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -18,13 +20,33 @@ import "~/index.css"
 		<link href="https://fonts.bunny.net/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
 	</head>
 
-	<body class="latte mx-auto flex max-w-[850px] flex-col bg-ctp-base px-4 py-8 text-ctp-text">
+	<body class="latte bg-ctp-base text-ctp-text mx-auto flex max-w-[850px] flex-col px-4 py-8">
 		<header class="flex flex-col">
 			<div class="flex">
 				<nav class="flex-grow">
 					<section>
 						<ul class="flex space-x-4">
-							<li><a href="/">Home</a></li>
+							<li>
+								<a
+									href="/"
+									class={currentPath === "/"
+										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Home</a>
+							</li>
+							<li>
+								<a
+									href="/essays"
+									class={currentPath.startsWith("/essays")
+										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Essays</a>
+							</li>
+							<li>
+								<a
+									href="/thoughts"
+									class={currentPath.startsWith("/thoughts")
+										? "relative pt-1.5 before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-ctp-lavender before:rounded-full"
+										: ""}>Thoughts</a>
+							</li>
 							<!-- <li><a href="/now">Now</a></li> -->
 						</ul>
 					</section>
@@ -38,7 +60,7 @@ import "~/index.css"
 					</a>
 				</div>
 			</div>
-			<div class="h-[2.5px] w-full rounded-full bg-gradient-to-br from-ctp-pink to-ctp-yellow"></div>
+			<div class="from-ctp-pink to-ctp-yellow h-[2.5px] w-full rounded-full bg-gradient-to-br"></div>
 		</header>
 
 		<main id="main" class="mt-4 pb-8">

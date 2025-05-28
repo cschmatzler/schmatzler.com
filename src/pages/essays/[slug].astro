@@ -4,17 +4,17 @@ import PageLayout from "~/layouts/PageLayout.astro";
 import PageMeta from "~/components/PageMeta.astro";
 
 export async function getStaticPaths() {
-	const posts = await getCollection("posts");
+	const essays = await getCollection("essays");
 
-	return posts.map((post: CollectionEntry<"posts">) => {
-		return { params: { slug: post.slug } };
+	return essays.map((essay: CollectionEntry<"essays">) => {
+		return { params: { slug: essay.slug } };
 	});
 }
 
 type Heading = { text: string; depth: number; slug: string };
 
 const { slug } = Astro.params;
-const entry = await getEntryBySlug("posts", slug);
+const entry = await getEntryBySlug("essays", slug);
 const { data } = entry;
 const { Content, headings } = await entry.render();
 
@@ -28,13 +28,13 @@ const formattedDate =
 	<PageMeta title={data.title} description={data.description} slot="meta" />
 	<Fragment slot="main">
 		<time datetime={data.date.toISOString()} class="order-first flex items-center">
-			<span class="mr-2 h-4 w-0.5 rounded-full bg-mauve"></span>
+			<span class="bg-ctp-mauve mr-2 h-4 w-0.5 rounded-full"></span>
 			<span class="text-overlay w-24 font-light">{formattedDate}</span>
 		</time>
 		<h1 class="mt-2 text-xl font-semibold tracking-tight">{data.title}</h1>
 		{
 			shownHeadings.length > 2 && (
-				<nav class="mt-8 rounded-xl border-4 border-lavender px-8 py-6">
+				<nav class="border-lavender mt-8 rounded-xl border-4 px-8 py-6">
 					<h2 class="text-2xl font-bold">In this post</h2>
 					<ol class="mt-5 space-y-2">
 						{shownHeadings.map((h: Heading) => {

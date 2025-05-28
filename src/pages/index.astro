@@ -2,19 +2,39 @@
 import { getCollection } from "astro:content";
 import PageLayout from "~/layouts/PageLayout.astro";
 import PageMeta from "~/components/PageMeta.astro";
-import PostList from "~/components/PostList.astro";
+import EssayList from "~/components/EssayList.astro";
+import ThoughtList from "~/components/ThoughtList.astro";
 
-const allPosts = await getCollection("posts", ({ data }) => {
+const allEssays = await getCollection("essays", ({ data }) => {
 	return data.draft === false;
 });
-const posts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+const essays = allEssays.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+const latestEssays = essays.slice(0, 3);
+
+const allThoughts = await getCollection("thoughts", ({ data }) => {
+	return data.draft === false;
+});
+const thoughts = allThoughts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+const latestThoughts = thoughts.slice(0, 10);
 ---
 
 <PageLayout>
 	<PageMeta title="Christoph Schmatzler" slot="meta" />
 	<Fragment slot="main">
+		<section class="mb-12">
+			<div class="mb-6 flex items-center justify-between">
+				<h2 class="text-2xl font-bold">Latest essays</h2>
+				<a href="/essays" class="text-lavender text-sm hover:underline">View all →</a>
+			</div>
+			<EssayList essays={latestEssays} />
+		</section>
+
 		<section>
-			<PostList posts={posts} />
+			<div class="mb-6 flex items-center justify-between">
+				<h2 class="text-2xl font-bold">Latest thoughts</h2>
+				<a href="/thoughts" class="text-lavender text-sm hover:underline">View all →</a>
+			</div>
+			<ThoughtList thoughts={latestThoughts} />
 		</section>
 	</Fragment>
 </PageLayout>

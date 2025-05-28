@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageMeta from "~/components/PageMeta.astro";
+import EssayList from "~/components/EssayList.astro";
+
+const allEssays = await getCollection("essays", ({ data }) => {
+	return data.draft === false;
+});
+const essays = allEssays.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+---
+
+<PageLayout>
+	<PageMeta title="Essays" slot="meta" />
+	<Fragment slot="main">
+		<section>
+			<h1 class="mb-8 text-2xl font-bold">Essays</h1>
+			<EssayList essays={essays} />
+		</section>
+	</Fragment>
+</PageLayout>

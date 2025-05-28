@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageMeta from "~/components/PageMeta.astro";
+import Thought from "~/components/Thought.astro";
+
+export async function getStaticPaths({ paginate }) {
+	const allThoughts = await getCollection("thoughts", ({ data }) => {
+		return data.draft === false;
+	});
+	const thoughts = allThoughts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+	return paginate(thoughts, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+---
+
+<PageLayout>
+	<PageMeta title="Thoughts" slot="meta" />
+	<Fragment slot="main">
+		<section>
+			<h1 class="mb-8 text-2xl font-bold">Thoughts</h1>
+			<div class="space-y-6">
+				{page.data.map((thought) => <Thought thought={thought} />)}
+			</div>
+
+			{
+				(page.url.prev || page.url.next) && (
+					<nav class="mt-12 flex justify-between">
+						{page.url.prev && (
+							<a href={page.url.prev} class="text-lavender hover:underline">
+								← Previous
+							</a>
+						)}
+						{page.url.next && (
+							<a href={page.url.next} class="text-lavender hover:underline">
+								Next →
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</section>
+	</Fragment>
+</PageLayout>
